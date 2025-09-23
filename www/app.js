@@ -1,20 +1,7 @@
-// Toggle dark mode persistant via localStorage
-Shiny.addCustomMessageHandler("toggle-dark", ({ enable }) => {
-  if (enable) {
-    document.documentElement.classList.add("dark");
-    localStorage.setItem("shiny-dark", "1");
+Shiny.addCustomMessageHandler("toggle-dark", function(message) {
+  if (message.enable) {
+    document.body.classList.add("dark-mode");
   } else {
-    document.documentElement.classList.remove("dark");
-    localStorage.removeItem("shiny-dark");
+    document.body.classList.remove("dark-mode");
   }
-});
-
-// Restaurer au chargement
-document.addEventListener("DOMContentLoaded", () => {
-  if (localStorage.getItem("shiny-dark") === "1") {
-    document.documentElement.classList.add("dark");
-    const chk = document.querySelector('#darkmode');
-    if (chk) chk.checked = true;
-  }
-  console.log("Dashboard Financier (vanilla Shiny) prêt.");
 });

@@ -1,17 +1,144 @@
-:root { --bg: #f5f7fa; --fg: #2c3e50; --card: #ffffff; --muted:#6b7280; --kpi:#eef2f7; }
-html.dark { --bg:#0f1216; --fg:#e6edf3; --card:#151a21; --muted:#9aa4b2; --kpi:#12171e; }
-
-body { font-family: -apple-system, Segoe UI, Roboto, Arial, sans-serif; background: var(--bg); color: var(--fg); }
-.navbar { border-bottom: 1px solid rgba(0,0,0,.06); background: var(--card); }
-.layout { display:grid; grid-template-columns: 300px 1fr; gap: 16px; padding:16px; }
-.sidebar { background: var(--card); border-radius: 12px; padding: 14px; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
-.content { display:flex; flex-direction: column; gap: 16px; }
-.kpi-row { display:grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
-.kpi { background: var(--kpi); border-radius: 12px; padding: 12px 14px; }
-.kpi h6 { margin:0 0 6px 0; color: var(--muted); font-weight:600; letter-spacing:.3px; }
-.card { background: var(--card); border-radius: 12px; padding: 10px; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
-
-@media (max-width: 1024px) {
-  .layout { grid-template-columns: 1fr; }
-  .kpi-row { grid-template-columns: repeat(2, 1fr); }
+/* ==== Base ==== */
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f5f6fa;
+  margin: 0;
+  padding: 0;
 }
+
+/* ==== Layout (mobile-first) ==== */
+.layout {
+  display: flex;
+  flex-direction: column; /* 👉 par défaut en colonne */
+  gap: 1rem;
+}
+
+/* 👉 MOBILE FIRST: sidebar prend toute la largeur */
+.sidebar {
+  width: 100%;
+  max-width: 100%;
+  background: #ffffff;
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  box-sizing: border-box;
+}
+
+/* contenu en dessous de la sidebar sur mobile */
+.content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 0; /* évite le scroll horizontal */
+}
+
+/* 👉 DESKTOP: sidebar à gauche + contenu à droite */
+@media (min-width: 992px) {
+  .layout {
+    flex-direction: row;   /* ✅ 2 colonnes */
+    align-items: stretch;  /* ✅ sidebar prend toute la hauteur */
+  }
+  .sidebar {
+    flex: 0 0 280px;       /* largeur fixe */
+    max-width: 280px;
+    height: 100vh;         /* ✅ pleine hauteur écran */
+    position: sticky;      /* ✅ reste visible en scroll */
+    top: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .content {
+    flex: 1 1 auto;        /* occupe le reste */
+    min-width: 0;
+  }
+}
+
+/* ==== Inputs sidebar en full width ==== */
+.sidebar .shiny-input-container,
+.sidebar .form-group,
+.sidebar .form-control,
+.sidebar .selectize-control,
+.sidebar .selectize-input {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box;
+}
+
+/* ==== Date range ==== */
+.sidebar .input-daterange {
+  display: grid;
+  grid-template-columns: 1fr 36px 1fr;
+  gap: .5rem;
+}
+.sidebar .input-daterange .input-group-addon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+@media (max-width: 576px) {
+  .sidebar .input-daterange {
+    grid-template-columns: 1fr;
+  }
+  .sidebar .input-daterange .input-group-addon {
+    display: none;
+  }
+}
+
+/* ==== Boutons dans la sidebar ==== */
+/* Conteneur des boutons : côte à côte sur grand écran, espacés */
+.sidebar .btn-container {
+  display: flex;
+  gap: 0.5rem;     /* ✅ espace horizontal entre les boutons */
+  flex-wrap: wrap; /* ✅ retour à la ligne si pas assez de place */
+  margin-top: 0.5rem;
+}
+
+/* Les boutons s'adaptent à l'espace */
+.sidebar .btn-container .btn {
+  flex: 1;         /* ✅ chacun prend 50% si possible */
+}
+
+/* ==== KPI Cards ==== */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1rem;
+}
+.kpi {
+  background: #ffffff;
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  text-align: center;
+  transition: transform .2s, box-shadow .2s;
+}
+.kpi:hover { transform: translateY(-3px); box-shadow: 0 4px 10px rgba(0,0,0,0.12); }
+
+/* ==== Cards & graphs ==== */
+.card {
+  background: #ffffff;
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+.graph-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1rem;
+}
+.card .highchart, .card .plotly, .card > div {
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+}
+
+/* ==== Dark mode ==== */
+body.dark-mode { background-color: #1e1e2f; color: #e4e6eb; }
+body.dark-mode .sidebar,
+body.dark-mode .kpi,
+body.dark-mode .card { background: #2a2a3c; color: #e4e6eb; box-shadow: 0 1px 4px rgba(0,0,0,0.6); }
+body.dark-mode .kpi:hover { box-shadow: 0 4px 10px rgba(0,0,0,0.8); }

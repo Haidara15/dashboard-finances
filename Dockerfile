@@ -5,15 +5,17 @@ RUN apt-get update && apt-get install -y \
     libssl-dev \
     libcurl4-openssl-dev \
     libxml2-dev \
-    && rm -rf /var/lib/apt/lists/*
+    libglpk-dev \
+ && rm -rf /var/lib/apt/lists/*
 
 # Installer remotes
 RUN R -e "install.packages('remotes', repos='https://cloud.r-project.org')"
 
 # Installer les packages nécessaires
 RUN R -e "remotes::install_cran(c( \
-    'shiny', 'plotly', 'DT', 'readr', 'dplyr', 'tidyr', \
-    'lubridate', 'scales', 'cachem', 'digest' \
+    'shiny', 'highcharter', 'DT', 'readr', 'dplyr', 'tidyr', \
+    'lubridate', 'scales', 'cachem', 'digest', 'htmlwidgets', \
+    'xts', 'zoo', 'igraph' \
   ))"
 
 # Supprimer tout le contenu par défaut de Shiny Server
