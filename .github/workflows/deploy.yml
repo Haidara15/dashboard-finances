@@ -28,11 +28,23 @@ jobs:
           echo "Pushing image: $IMAGE_NAME"
           docker push $IMAGE_NAME
 
+      # 🔎 Étape de test SSH (debug)
+      - name: 🔎 Test SSH connection
+        uses: appleboy/ssh-action@v1.1.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            echo "✅ SSH connection successful"
+
+      # 🚀 Déploiement Blue-Green
       - name: 🚀 Deploy on VPS (Blue-Green)
         uses: appleboy/ssh-action@v1.1.0
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script_stop: true
           script: |
             bash ~/deploy_blue_green.sh dashboard-finances
