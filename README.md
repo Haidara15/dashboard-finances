@@ -302,7 +302,7 @@ if [ -z "$APP_NAME" ]; then
   exit 1
 fi
 
-PORTS_FILE="/home/username/configs/ports.yml"
+PORTS_FILE="/home/username_server/configs/ports.yml"
 
 if [ ! -f "$PORTS_FILE" ]; then
   echo "❌ Fichier des ports introuvable : $PORTS_FILE"
@@ -318,7 +318,7 @@ if [ -z "$BLUE_PORT" ] || [ -z "$GREEN_PORT" ]; then
 fi
 
 IMAGE="ghcr.io/Haidara15/${APP_NAME}:latest"
-ACTIVE_FILE="/home/username/${APP_NAME}_active_color.txt"
+ACTIVE_FILE="/home/username_server/${APP_NAME}_active_color.txt"
 NGINX_UPSTREAM="/etc/nginx/upstreams/${APP_NAME}.conf"
 
 if [ -f "$ACTIVE_FILE" ]; then
@@ -351,7 +351,10 @@ docker rm -f ${APP_NAME}-${NEXT} 2>/dev/null || true
 echo "📥 Pull de la dernière image $IMAGE..."
 docker pull "$IMAGE"
 
-docker run -d   --name ${APP_NAME}-${NEXT}   -p ${PORT}:3838   $IMAGE
+docker run -d \
+  --name ${APP_NAME}-${NEXT} \
+  -p ${PORT}:3838 \
+  $IMAGE
 
 echo "🩺 Vérification de la santé..."
 for i in {1..10}; do
