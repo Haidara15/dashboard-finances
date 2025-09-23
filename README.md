@@ -436,16 +436,60 @@ jobs:
 
 ---
 
-## 7️⃣ Secrets GitHub Actions
+### 7️⃣ Secrets GitHub Actions  
 
-Dans votre dépôt GitHub → **Settings → Secrets and variables → Actions → New repository secret**, ajoutez :  
+Dans votre dépôt GitHub → **Settings → Secrets and variables → Actions → New repository secret**, ajoutez les secrets suivants :  
 
-- `GHCR_PAT` → Token GitHub avec accès `write:packages`.  
-- `VPS_HOST` → IP de votre VPS.  
-- `VPS_USER` → utilisateur du VPS (ex: `haidara`).  
-- `SSH_PRIVATE_KEY` → contenu de votre clé privée (`~/.ssh/id_ed25519`).  
+- **`GHCR_PAT`** → un **token GitHub** permettant de pousser vos images Docker dans le registre GitHub Container Registry (GHCR).  
+  Pour le générer :  
+  - Allez dans **GitHub → Settings → Developer settings → Personal access tokens → Tokens (classic)**  
+  - Cliquez sur **Generate new token (classic)**  
+  - Donnez un nom (ex: `ghcr-deploy`), une durée de validité (ex: 90 jours ou "No expiration")  
+  - Cochez uniquement les droits :  
+    - `write:packages`  
+    - `read:packages`  
+    - `delete:packages` (optionnel)  
+  - Copiez le token généré et collez-le dans le champ `GHCR_PAT` sur GitHub.  
 
-Cette clé est utilisée par GitHub Actions pour se connecter en SSH à votre VPS et exécuter le script `deploy_blue_green.sh`.  
+- **`VPS_HOST`** → l’adresse IP de votre VPS (par ex: `ip_vps`).  
+
+- **`VPS_USER`** → l’utilisateur de votre VPS (par ex: `username_server`).  
+
+- **`SSH_PRIVATE_KEY`** → le **contenu de votre clé privée SSH** qui permet à GitHub Actions de se connecter automatiquement à votre VPS.  
+
+  Pour la générer (si vous ne l’avez pas déjà) :  
+  ```bash
+  ssh-keygen -t ed25519 -C "votre-email@example.com"
+
+  Cela crée deux fichiers dans `~/.ssh/` :
+
+- `id_ed25519` → clé privée (**ne jamais partager publiquement !**)  
+- `id_ed25519.pub` → clé publique (à copier dans le VPS)  
+
+Copier la clé publique sur le VPS :  
+```bash
+ssh-copy-id -i ~/.ssh/id_ed25519.pub username_server@ip_vps
+
+````
+
+Vérifier que la connexion SSH fonctionne sans mot de passe :
+
+```bash
+
+ssh -i ~/.ssh/id_ed25519 username_server@ip_vps
+
+````
+
+Ensuite, ouvrir la clé privée pour copier son contenu :
+
+```bash
+
+cat ~/.ssh/id_ed25519
+
+````
+
+Copier tout le contenu affiché et le coller dans le secret SSH_PRIVATE_KEY sur GitHub.
+
 
 ---
 
