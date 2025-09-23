@@ -71,9 +71,9 @@ ui <- navbarPage(
     tags$script(src="app.js")
   ),
   
-  h1("Dashboard des données financières",
-
-     style="text-align:center;padding:15px 15px;background-color:#ccc;border-radius:10px;"),
+  # h1("Dashboard des données financières",
+  # 
+  #    style="text-align:center;padding:15px 15px;background-color:#ccc;border-radius:10px;"),
   
   tabPanel(
     "Dashboard",
