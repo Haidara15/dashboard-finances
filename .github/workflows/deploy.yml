@@ -28,11 +28,18 @@ jobs:
           echo "Pushing image: $IMAGE_NAME"
           docker push $IMAGE_NAME
 
+      - name: 🔎 Test SSH connection
+        run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > id_ed25519
+          chmod 600 id_ed25519
+          ssh -i id_ed25519 -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "echo ✅ Connected"
+
       - name: 🚀 Deploy on VPS (Blue-Green)
         uses: appleboy/ssh-action@v1.1.0
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script_stop: true
           script: |
             bash ~/deploy_blue_green.sh dashboard-finances
