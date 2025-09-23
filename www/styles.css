@@ -1,0 +1,17 @@
+:root { --bg: #f5f7fa; --fg: #2c3e50; --card: #ffffff; --muted:#6b7280; --kpi:#eef2f7; }
+html.dark { --bg:#0f1216; --fg:#e6edf3; --card:#151a21; --muted:#9aa4b2; --kpi:#12171e; }
+
+body { font-family: -apple-system, Segoe UI, Roboto, Arial, sans-serif; background: var(--bg); color: var(--fg); }
+.navbar { border-bottom: 1px solid rgba(0,0,0,.06); background: var(--card); }
+.layout { display:grid; grid-template-columns: 300px 1fr; gap: 16px; padding:16px; }
+.sidebar { background: var(--card); border-radius: 12px; padding: 14px; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+.content { display:flex; flex-direction: column; gap: 16px; }
+.kpi-row { display:grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.kpi { background: var(--kpi); border-radius: 12px; padding: 12px 14px; }
+.kpi h6 { margin:0 0 6px 0; color: var(--muted); font-weight:600; letter-spacing:.3px; }
+.card { background: var(--card); border-radius: 12px; padding: 10px; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+
+@media (max-width: 1024px) {
+  .layout { grid-template-columns: 1fr; }
+  .kpi-row { grid-template-columns: repeat(2, 1fr); }
+}
