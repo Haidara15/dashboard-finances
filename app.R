@@ -79,7 +79,7 @@ ui <- navbarPage(
             selectInput("region", "Région", choices = c("Toutes", sort(unique(fin_data$region))), selected = "Toutes"),
             selectInput("category", "Catégorie", choices = c("Toutes", sort(unique(fin_data$category))), selected = "Toutes"),
             selectInput("product", "Produit", choices = c("Tous", sort(unique(fin_data$product))), selected = "Tous"),
-            checkboxInput("darkmode", "Mode sombre (modifié)", value = FALSE),
+            checkboxInput("darkmode", "Mode sombre", value = FALSE),
             hr(),
             
             div(class = "btn-container",
