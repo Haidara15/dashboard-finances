@@ -1,0 +1,38 @@
+name: 🚀 Deploy Dashboard Finances (Docker)
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📂 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🔑 Login to GitHub Container Registry
+        run: echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u Haidara15 --password-stdin
+
+      - name: 🛠 Build Docker image (no cache)
+        run: |
+          IMAGE_NAME=ghcr.io/haidara15/dashboard-finances:latest
+          echo "Building image (no cache): $IMAGE_NAME"
+          docker build --no-cache -t $IMAGE_NAME .
+
+      - name: 📤 Push Docker image
+        run: |
+          IMAGE_NAME=ghcr.io/haidara15/dashboard-finances:latest
+          echo "Pushing image: $IMAGE_NAME"
+          docker push $IMAGE_NAME
+
+      - name: 🚀 Deploy on VPS (Blue-Green)
+        uses: appleboy/ssh-action@v1.1.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            bash ~/deploy_blue_green.sh dashboard-finances
