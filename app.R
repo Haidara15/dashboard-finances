@@ -53,14 +53,20 @@ kpis <- function(df) {
 }
 
 # ==== UI ====
+# ==== UI ====
 ui <- navbarPage(
   title = div(
     tags$img(src = "logo.png", height = 24, onerror="this.style.display='none'"),
     HTML("Finance Dashboard")
   ),
   header = tagList(
-    tags$link(rel="stylesheet", type="text/css", href="styles.css"),
-    tags$script(src="app.js")
+    # ==== Anti-cache : ajout d'un paramètre dynamique ?v=timestamp ====
+    tags$link(
+      rel="stylesheet",
+      type="text/css",
+      href=paste0("styles.css?v=", as.integer(Sys.time()))
+    ),
+    tags$script(src=paste0("app.js?v=", as.integer(Sys.time())))
   ),
   
   tabPanel(
@@ -80,7 +86,6 @@ ui <- navbarPage(
                 downloadButton("dl_csv", "Télécharger CSV"),
                 actionButton("reset_filters", "Réinitialiser")
             )
-            
         ),
         
         div(class = "content",
@@ -121,6 +126,7 @@ ui <- navbarPage(
     )
   )
 )
+
 
 # ==== SERVER ====
 server <- function(input, output, session) {
