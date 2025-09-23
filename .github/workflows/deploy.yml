@@ -28,14 +28,12 @@ jobs:
           echo "Pushing image: $IMAGE_NAME"
           docker push $IMAGE_NAME
 
-      # 🔎 Étape de test SSH (debug)
       - name: 🔎 Test SSH connection
-  run: |
-    echo "${{ secrets.SSH_PRIVATE_KEY }}" > id_ed25519
-    chmod 600 id_ed25519
-    ssh -i id_ed25519 -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "echo ✅ Connected"
+        run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > id_ed25519
+          chmod 600 id_ed25519
+          ssh -i id_ed25519 -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "echo ✅ Connected"
 
-      # 🚀 Déploiement Blue-Green
       - name: 🚀 Deploy on VPS (Blue-Green)
         uses: appleboy/ssh-action@v1.1.0
         with:
