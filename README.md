@@ -43,7 +43,7 @@ dig +short Nom-de-domaine
 dig +short www.Nom-de-domaine
 ```
 
-👉 Les deux doivent renvoyer l’IP de votre VPS.  
+Les deux doivent renvoyer l’IP de votre VPS.  
 
 ---
 
@@ -81,7 +81,7 @@ docker --version
 sudo usermod -aG docker username_server
 ```
 
-👉 Remplacez `username_server` par votre utilisateur (par ex. `haidara`).  
+Remplacez `username_server` par votre utilisateur (par ex. `haidara`).  
 Déconnectez-vous puis reconnectez-vous au VPS pour appliquer.  
 
 Vérifiez :  
@@ -336,20 +336,20 @@ else
   PORT=$BLUE_PORT
 fi
 
-echo "🚀 Déploiement de $APP_NAME vers $NEXT (port $PORT)"
+echo "Déploiement de $APP_NAME vers $NEXT (port $PORT)"
 
 # 🔁 Supprimer tout conteneur écoutant déjà sur le port ciblé
-echo "🧹 Nettoyage des conteneurs utilisant le port ${PORT}..."
+echo " Nettoyage des conteneurs utilisant le port ${PORT}..."
 CONFLICTING_CONTAINER=$(docker ps --filter "publish=${PORT}" --format "{{.ID}}")
 if [ -n "$CONFLICTING_CONTAINER" ]; then
-  echo "⚠️  Un conteneur utilise déjà le port ${PORT}. Suppression..."
+  echo " Un conteneur utilise déjà le port ${PORT}. Suppression..."
   docker rm -f "$CONFLICTING_CONTAINER"
 fi
 
 # 🔁 Supprimer l’ancien conteneur de cette version (si déjà existant)
 docker rm -f ${APP_NAME}-${NEXT} 2>/dev/null || true
 
-echo "📥 Pull de la dernière image $IMAGE..."
+echo "Pull de la dernière image $IMAGE..."
 docker pull "$IMAGE"
 
 docker run -d \
@@ -401,10 +401,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📂 Checkout repository
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: 🔑 Login to GitHub Container Registry
+      - name: Login to GitHub Container Registry
         run: echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u Haidara15 --password-stdin
 
       - name: 🛠 Build Docker image (no cache)
@@ -412,12 +412,12 @@ jobs:
           IMAGE_NAME=ghcr.io/haidara15/dashboard-finances:latest
           docker build --no-cache -t $IMAGE_NAME .
 
-      - name: 📤 Push Docker image
+      - name: Push Docker image
         run: |
           IMAGE_NAME=ghcr.io/haidara15/dashboard-finances:latest
           docker push $IMAGE_NAME
 
-      - name: 🔎 Test SSH connection
+      - name: Test SSH connection
         run: |
           printf "%s
 " "${{ secrets.SSH_PRIVATE_KEY }}" > id_ed25519
