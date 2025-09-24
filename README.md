@@ -28,7 +28,7 @@ D’abord, connectez-vous à votre serveur :
 ssh username_server@ip_vps
 ```
 
-- **username_server** → votre utilisateur VPS (par ex. `haidara`).  
+- **username_server** → votre utilisateur VPS.  
 - **ip_vps** → l’adresse IP de votre serveur (Exemple : 51.68.XXX.XXX).  
 
 ---
