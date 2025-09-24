@@ -1,5 +1,5 @@
 # 🚀 Déploiement automatique d’une application R Shiny sur VPS Ubuntu (OVH) avec Docker, NGINX et CI/CD Blue/Green via GitHub Actions & GHCR  
-👉 Démo en ligne : https://Nom-de-domaine/dashboard-finances/  
+👉 Démo en ligne : https://m-haidara/dashboard-finances/  
 
 Application Shiny conteneurisée et déployée sur un VPS OVHcloud via Docker, NGINX (reverse proxy) et GitHub Actions (CI/CD).  
 Le déploiement se fait avec une stratégie **Blue/Green** pour des mises à jour sans interruption.  
@@ -29,7 +29,7 @@ ssh username_server@ip_vps
 ```
 
 - **username_server** → votre utilisateur VPS (par ex. `haidara`).  
-- **ip_vps** → l’adresse IP de votre serveur OVH.  
+- **ip_vps** → l’adresse IP de votre serveur (Exemple : 51.68.XXX.XXX).  
 
 ---
 
