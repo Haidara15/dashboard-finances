@@ -191,7 +191,7 @@ upstream dashboard-finances {
 # Server HTTPS (443)
 ##############################
 server {
-    server_name Nom-de-domaine www.Nom-de-domaine;
+    server_name m-haidara.fr www.m-haidara.fr;
 
     # dashboard-finances
     location /dashboard-finances/ {
@@ -208,8 +208,8 @@ server {
     }
 
     listen 443 ssl; # managed by Certbot
-    ssl_certificate /etc/letsencrypt/live/Nom-de-domaine/fullchain.pem; # managed by Certbot
-    ssl_certificate_key /etc/letsencrypt/live/Nom-de-domaine/privkey.pem; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/m-haidara.fr/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/m-haidara.fr/privkey.pem; # managed by Certbot
     include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
 }
@@ -218,18 +218,19 @@ server {
 # Server HTTP (80 → HTTPS)
 ##############################
 server {
-    if ($host = www.Nom-de-domaine) {
+    if ($host = www.m-haidara.fr) {
         return 301 https://$host$request_uri;
     }
 
-    if ($host = Nom-de-domaine) {
+    if ($host = m-haidara.fr) {
         return 301 https://$host$request_uri;
     }
 
     listen 80;
-    server_name Nom-de-domaine www.Nom-de-domaine;
+    server_name m-haidara.fr www.m-haidara.fr;
     return 404;
 }
+
 ```
 
 Enregistrez : `CTRL + O`, puis quittez : `CTRL + X`.  
@@ -237,7 +238,7 @@ Enregistrez : `CTRL + O`, puis quittez : `CTRL + X`.
 Activez le site :  
 
 ```bash
-sudo ln -s /etc/nginx/sites-available/Nom-de-domaine /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/m-haidara.fr /etc/nginx/sites-enabled/
 sudo nginx -t
 sudo systemctl reload nginx
 ```
