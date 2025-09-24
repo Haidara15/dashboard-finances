@@ -459,16 +459,16 @@ Dans votre dépôt GitHub → **Settings → Secrets and variables → Actions �
 
   Pour la générer (si vous ne l’avez pas déjà) :  
   ```bash
-  ssh-keygen -t ed25519 -C "votre-email@example.com"
+  ssh-keygen -t ed25519 -C "votre-email@example.com" -f ~/.ssh/github_actions_key
 
   Cela crée deux fichiers dans `~/.ssh/` :
 
-- `id_ed25519` → clé privée (**ne jamais partager publiquement !**)  
-- `id_ed25519.pub` → clé publique (à copier dans le VPS)  
+- `github_actions_key` → clé privée (**ne jamais partager publiquement !**)  
+- `github_actions_key.pub` → clé publique (à copier dans le VPS)  
 
 Copier la clé publique sur le VPS :  
 ```bash
-ssh-copy-id -i ~/.ssh/id_ed25519.pub username_server@ip_vps
+ssh-copy-id -i ~/.ssh/github_actions_key.pub username_server@ip_vps
 
 ````
 
@@ -476,7 +476,7 @@ Vérifier que la connexion SSH fonctionne sans mot de passe :
 
 ```bash
 
-ssh -i ~/.ssh/id_ed25519 username_server@ip_vps
+ssh -i ~/.ssh/github_actions_key username_server@ip_vps
 
 ````
 
@@ -484,7 +484,7 @@ Ensuite, ouvrir la clé privée pour copier son contenu :
 
 ```bash
 
-cat ~/.ssh/id_ed25519
+cat ~/.ssh/github_actions_key
 
 ````
 
