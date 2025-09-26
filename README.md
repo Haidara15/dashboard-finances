@@ -445,7 +445,7 @@ Dans votre dépôt GitHub → **Settings → Secrets and variables → Actions �
   Pour le générer :  
   - Allez dans **GitHub → Settings → Developer settings → Personal access tokens → Tokens (classic)**  
   - Cliquez sur **Generate new token (classic)**  
-  - Donnez un nom (ex: `ghcr-deploy`), une durée de validité (ex: 90 jours ou "No expiration")  
+  - Donnez un nom (ex: `ghcr-deploy`), une durée de validité (ex: 90 jours)  
   - Cochez uniquement les droits :  
     - `write:packages`  
     - `read:packages`  
@@ -458,13 +458,13 @@ Dans votre dépôt GitHub → **Settings → Secrets and variables → Actions �
 
 - **`SSH_PRIVATE_KEY`** → le **contenu de votre clé privée SSH** qui permet à GitHub Actions de se connecter automatiquement à votre VPS.  
 
-  Pour la générer (si vous ne l’avez pas déjà) :  
+  Pour la générer :  
   ```bash
   ssh-keygen -t ed25519 -C "votre-email@example.com" -f ~/.ssh/github_actions_key
 
   Cela crée deux fichiers dans `~/.ssh/` :
 
-- `github_actions_key` → clé privée (**ne jamais partager publiquement !**)  
+- `github_actions_key` → clé privée (**ne jamais partager**)  
 - `github_actions_key.pub` → clé publique (à copier dans le VPS)  
 
 Copier la clé publique sur le VPS :  
