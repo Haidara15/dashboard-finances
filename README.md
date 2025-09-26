@@ -6,7 +6,7 @@ Le déploiement se fait avec une stratégie **Blue/Green** pour des mises à jou
 
 ---
 
-## 📌 Commandes utiles à connaître
+## Commandes utiles à connaître
 
 Avant de commencer, voici un mini-glossaire des options et commandes que vous verrez souvent :  
 
