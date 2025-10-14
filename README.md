@@ -389,7 +389,7 @@ chmod +x ~/deploy_blue_green.sh
 Créez sur GitHub le fichier `.github/workflows/deploy.yml` :  
 
 ```yaml
-name: Deploy Dashboard Finances (Docker)
+name: Déploiement Dashboard Finances (Docker)
 
 on:
   push:
@@ -398,33 +398,33 @@ on:
 
 jobs:
   build-and-deploy:
+    name: Construction et déploiement
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Récupération du dépôt
         uses: actions/checkout@v4
 
-      - name: Login to GitHub Container Registry
+      - name: Connexion au GitHub Container Registry
         run: echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u Haidara15 --password-stdin
 
-      - name: Build Docker image (no cache)
+      - name: Construction de l’image Docker (sans cache)
         run: |
           IMAGE_NAME=ghcr.io/haidara15/dashboard-finances:latest
           docker build --no-cache -t $IMAGE_NAME .
 
-      - name: Push Docker image
+      - name: Envoi de l’image Docker
         run: |
           IMAGE_NAME=ghcr.io/haidara15/dashboard-finances:latest
           docker push $IMAGE_NAME
 
-      - name: Test SSH connection
+      - name: Test de la connexion SSH
         run: |
-          printf "%s
-" "${{ secrets.SSH_PRIVATE_KEY }}" > id_ed25519
+          printf "%s\n" "${{ secrets.SSH_PRIVATE_KEY }}" > id_ed25519
           chmod 600 id_ed25519
           ssh -i id_ed25519 -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "echo Connected"
 
-      - name: 🚀 Deploy on VPS (Blue-Green)
+      - name: Déploiement sur le VPS (Blue-Green)
         uses: appleboy/ssh-action@v1.1.0
         with:
           host: ${{ secrets.VPS_HOST }}
@@ -433,6 +433,7 @@ jobs:
           script_stop: true
           script: |
             bash ~/deploy_blue_green.sh dashboard-finances
+
 ```
 
 ---
