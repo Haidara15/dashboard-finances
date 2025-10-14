@@ -357,7 +357,7 @@ docker run -d \
   -p ${PORT}:3838 \
   $IMAGE
 
-echo "🩺 Vérification de la santé..."
+echo "Vérification de la santé..."
 for i in {1..10}; do
   if curl -fs http://localhost:${PORT}/ > /dev/null; then
     echo "Conteneur $NEXT OK"
