@@ -1,4 +1,4 @@
-# 🚀 Déploiement automatique d’une application R Shiny sur VPS Ubuntu (OVH) avec Docker, NGINX et CI/CD Blue/Green via GitHub Actions & GHCR (GitHub Container Registry)
+# Déploiement automatique d’une application R Shiny sur VPS Ubuntu (OVH) avec Docker, NGINX et CI/CD Blue/Green via GitHub Actions & GHCR (GitHub Container Registry)
 
 
 Application Shiny conteneurisée et déployée sur un VPS OVHcloud via Docker, NGINX (reverse proxy) et GitHub Actions (CI/CD).  
@@ -35,7 +35,7 @@ ssh username_server@ip_vps
 
 ## 2️⃣ Préparation du VPS
 
-### 0) DNS  
+### DNS  
 Avant tout, assurez-vous que votre domaine pointe bien vers l’IP de votre VPS :  
 
 ```bash
@@ -299,14 +299,14 @@ set -e
 APP_NAME="$1"
 
 if [ -z "$APP_NAME" ]; then
-  echo "❌ Usage: $0 <app_name>"
+  echo " Usage: $0 <app_name>"
   exit 1
 fi
 
 PORTS_FILE="/home/username_server/configs/ports.yml"
 
 if [ ! -f "$PORTS_FILE" ]; then
-  echo "❌ Fichier des ports introuvable : $PORTS_FILE"
+  echo " Fichier des ports introuvable : $PORTS_FILE"
   exit 1
 fi
 
@@ -314,7 +314,7 @@ BLUE_PORT=$(yq ".${APP_NAME}.blue" "$PORTS_FILE")
 GREEN_PORT=$(yq ".${APP_NAME}.green" "$PORTS_FILE")
 
 if [ -z "$BLUE_PORT" ] || [ -z "$GREEN_PORT" ]; then
-  echo "❌ Ports non définis pour l’application '$APP_NAME' dans $PORTS_FILE"
+  echo "Ports non définis pour l’application '$APP_NAME' dans $PORTS_FILE"
   exit 1
 fi
 
@@ -338,7 +338,7 @@ fi
 
 echo "Déploiement de $APP_NAME vers $NEXT (port $PORT)"
 
-# 🔁 Supprimer tout conteneur écoutant déjà sur le port ciblé
+# Supprimer tout conteneur écoutant déjà sur le port ciblé
 echo " Nettoyage des conteneurs utilisant le port ${PORT}..."
 CONFLICTING_CONTAINER=$(docker ps --filter "publish=${PORT}" --format "{{.ID}}")
 if [ -n "$CONFLICTING_CONTAINER" ]; then
@@ -346,7 +346,7 @@ if [ -n "$CONFLICTING_CONTAINER" ]; then
   docker rm -f "$CONFLICTING_CONTAINER"
 fi
 
-# 🔁 Supprimer l’ancien conteneur de cette version (si déjà existant)
+# Supprimer l’ancien conteneur de cette version (si déjà existant)
 docker rm -f ${APP_NAME}-${NEXT} 2>/dev/null || true
 
 echo "Pull de la dernière image $IMAGE..."
@@ -360,20 +360,20 @@ docker run -d \
 echo "🩺 Vérification de la santé..."
 for i in {1..10}; do
   if curl -fs http://localhost:${PORT}/ > /dev/null; then
-    echo "✅ Conteneur $NEXT OK"
+    echo "Conteneur $NEXT OK"
     break
   fi
-  echo "⏳ En attente..."
+  echo "En attente..."
   sleep 2
 done
 
 echo "server 127.0.0.1:${PORT};" | sudo tee "$NGINX_UPSTREAM" > /dev/null
 echo "$NEXT" > "$ACTIVE_FILE"
 
-echo "🔁 Reload de NGINX..."
+echo " Reload de NGINX..."
 sudo systemctl reload nginx
 
-echo "✅ $APP_NAME déployé sans downtime vers $NEXT"
+echo "$APP_NAME déployé sans downtime vers $NEXT"
 ```
 
 Rendez-le exécutable :  
@@ -389,7 +389,7 @@ chmod +x ~/deploy_blue_green.sh
 Créez sur GitHub le fichier `.github/workflows/deploy.yml` :  
 
 ```yaml
-name: 🚀 Deploy Dashboard Finances (Docker)
+name: Deploy Dashboard Finances (Docker)
 
 on:
   push:
@@ -407,7 +407,7 @@ jobs:
       - name: Login to GitHub Container Registry
         run: echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u Haidara15 --password-stdin
 
-      - name: 🛠 Build Docker image (no cache)
+      - name: Build Docker image (no cache)
         run: |
           IMAGE_NAME=ghcr.io/haidara15/dashboard-finances:latest
           docker build --no-cache -t $IMAGE_NAME .
@@ -422,7 +422,7 @@ jobs:
           printf "%s
 " "${{ secrets.SSH_PRIVATE_KEY }}" > id_ed25519
           chmod 600 id_ed25519
-          ssh -i id_ed25519 -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "echo ✅ Connected"
+          ssh -i id_ed25519 -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "echo Connected"
 
       - name: 🚀 Deploy on VPS (Blue-Green)
         uses: appleboy/ssh-action@v1.1.0
@@ -505,11 +505,11 @@ git commit -m "Nouvelle mise à jour"
 git push origin main
 ```
 
-➡️ Dès que vous poussez sur **main** :  
+Dès que vous poussez sur **main** :  
 1. GitHub Actions construit une nouvelle image Docker.  
 2. L’image est poussée sur GitHub Container Registry (GHCR).  
 3. Le workflow se connecte en SSH à votre VPS.  
 4. Le script `deploy_blue_green.sh` déploie la nouvelle version sur le port libre (Blue ou Green).  
 5. NGINX bascule automatiquement le trafic.  
 
-Résultat : **mise à jour sans coupure de service 🎉**  
+Résultat : **mise à jour sans coupure de service **  
