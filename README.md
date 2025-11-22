@@ -513,4 +513,4 @@ Dès que vous poussez sur **main** :
 4. Le script `deploy_blue_green.sh` déploie la nouvelle version sur le port libre (Blue ou Green).  
 5. NGINX bascule automatiquement le trafic.  
 
-Résultat : **mise à jour sans coupure de service **  
+Résultat : mise à jour sans interruption de service 
