@@ -20,7 +20,7 @@ Avant de commencer, voici un mini-glossaire des options et commandes que vous ve
 
 ---
 
-## 1️⃣ Connexion au VPS
+## I Connexion au VPS
 
 D’abord, connectez-vous à votre serveur :  
 
@@ -33,7 +33,7 @@ ssh username_server@ip_vps
 
 ---
 
-## 2️⃣ Préparation du VPS
+## II Préparation du VPS
 
 ### DNS  
 Avant tout, assurez-vous que votre domaine pointe bien vers l’IP de votre VPS :  
@@ -133,7 +133,7 @@ mkdir -p ~/temp_nginx
 
 ---
 
-## 3️⃣ Dockerfile
+## III Dockerfile
 
 Créez un fichier **Dockerfile** à la racine de votre projet :  
 
@@ -167,7 +167,7 @@ CMD ["/usr/bin/shiny-server"]
 
 ---
 
-## 4️⃣ Configuration NGINX
+## IV Configuration NGINX
 
 ### a) Fichier de site  
 
@@ -282,7 +282,7 @@ dashboard-finances:
 
 ---
 
-## 5️⃣ Script Blue/Green
+## V Script Blue/Green
 
 Créez :  
 
@@ -384,7 +384,7 @@ chmod +x ~/deploy_blue_green.sh
 
 ---
 
-## 6️⃣ GitHub Actions
+## VI GitHub Actions
 
 Créez sur GitHub le fichier `.github/workflows/deploy.yml` :  
 
@@ -438,7 +438,7 @@ jobs:
 
 ---
 
-### 7️⃣ Secrets GitHub Actions  
+### VII Secrets GitHub Actions  
 
 Dans votre dépôt GitHub → **Settings → Secrets and variables → Actions → New repository secret**, ajoutez les secrets suivants :  
 
@@ -495,7 +495,7 @@ Copier tout le contenu affiché et le coller dans le secret SSH_PRIVATE_KEY sur 
 
 ---
 
-## 8️⃣ Workflow complet (après modification locale)
+## VIII Workflow complet (après modification locale)
 
 Une fois tout configuré, le cycle est le suivant :  
 
